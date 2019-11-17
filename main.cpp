@@ -11,17 +11,32 @@ int main(int argc, char **argv) {
     }
 
     cv::VideoCapture cap(argv[1]);
-    const char *outputDirectory;
+    std::string outputDirectory;
+    cv::Mat frame;
+    size_t i(0);
 
     if(argc >= 3){
         outputDirectory = argv[2];
+        outputDirectory.append("/");
     }else{
-        outputDirectory = "output";
+        outputDirectory = "output/";
     }
 
-    mkdir(outputDirectory, 0777);
+    mkdir(argv[2], 0777);
 
+    while(true){
+        std::string output = outputDirectory;
+        cv::Mat grayscale;
+        cap >> frame;
+        ++i;
 
+        if(frame.empty()){
+            break;
+        }
+
+        cv::cvtColor(frame, grayscale, CV_BGR2GRAY);
+        cv::imwrite( output.append(std::to_string(i).append(".jpg")), grayscale);
+    }
 
     return 0;
 }

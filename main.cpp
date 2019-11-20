@@ -11,6 +11,8 @@ int main(int argc, char **argv) {
     }
 
     cv::VideoCapture cap(argv[1]);
+    std::string fileName = argv[1];
+    fileName = fileName.substr(0, fileName.size()-3);
     std::string outputDirectory;
     cv::Mat frame;
     size_t i(0);
@@ -35,7 +37,9 @@ int main(int argc, char **argv) {
         }
 
         cv::cvtColor(frame, grayscale, CV_BGR2GRAY);
-        cv::imwrite( output.append(std::to_string(i).append(".jpg")), grayscale);
+
+        cv::imwrite( output.append(fileName.append(std::to_string(i).append(".jpg"))), grayscale);
+        std::cout << "writing image " << i << "to filepath " << output << std::endl;
     }
 
     return 0;
